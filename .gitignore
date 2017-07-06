@@ -1,0 +1,91 @@
+getmybot/settings/my.py
+
+tags
+.vscode/
+latest.dump
+celerybeat-schedule*
+
+node_modules/
+/static
+static/bundles/
+
+.env
+tiny-lr.pid
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+postactivate
+
+# Distribution / packaging
+.Python
+env/
+scout-env/
+venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+features/
+cover/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# logins and passwords
+# credentials.py
+
+
+# test database
+test.db
+
+# doc file
+.docs/
+
+# PyCharm settings
+settings.jar
+
+
+# pyCharm stuff
+.idea/
+
+# local file uploads
+/media
+/logs
+_local/*

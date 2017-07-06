@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="format-detection" content="telephone=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+
+    <link href="css/style.css" rel="stylesheet" media="screen">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/url-search-params.js" type="text/javascript" charset="utf-8"></script>
+
+
+
+</head>
+<body>
+
+<div class="container">
+    <form role="form" id="selected">
+        <div class="form-group block block1">
+            <label for="brand" class="title2 text-left">Укажите марку вашего автомобиля</label>
+            <select name="brand" id="brand" class="form-control" disabled>
+                <option selected value="">Выберите из списка</option>
+            </select>
+        </div>
+        <div class="form-group block">
+            <label for="model" class="title2 text-left">Укажите модель</label>
+            <select name="model" id="model" class="form-control" disabled>
+                <option selected value="">Выберите из списка</option>
+            </select>
+        </div>
+        <div class="form-group block">
+            <label for="year" class="title2 text-left">Укажите год выпуска</label>
+            <select name="year" id="year" class="form-control">
+                <option selected value="">Выберите из списка</option>
+            </select>
+        </div>
+        <div class="block">
+            <p style="color: red; text-align: center; margin-bottom: 10px" id="error"></p>
+            <div class="input-bg"><input id="creditID" class="submit" type="button" value="OK"></div>
+        </div>
+    </form>
+
+    <form role="form" id="inputed" style="display: none">
+        <div class="form-group block block1">
+            <label for="brand_inputed" class="title2 text-left">Введите марку вашего автомобиля</label>
+            <input  name="brand_inputed" id="brand_inputed" class="form-control" type="text">
+        </div>
+        <div class="form-group block">
+            <label for="model_inputed" class="title2 text-left">Введите модель</label>
+            <input  name="model_inputed" id="model_inputed" class="form-control" type="text">
+        </div>
+        <div class="form-group block">
+            <label for="year_inputed" class="title2 text-left">Укажите год выпуска</label>
+            <select name="year_inputed" id="year_inputed" class="form-control">
+                <option selected value="">Выберите из списка</option>
+            </select>
+        </div>
+        <div class="block">
+            <p style="color: red; text-align: center; margin-bottom: 10px" id="error_inputed"></p>
+            <div class="input-bg"><input id="creditID_inputed" class="submit" type="button" value="OK"></div>
+        </div>
+    </form>
+
+    <div class="text-center">
+        <a href="#" id="change_form">Не нашли свой автомобиль в списке?</a>
+    </div>
+
+
+</div>
+
+<script src="js/powerange.min.js"></script>
+<script type="text/javascript">
+    const BRANDS = {
+        "LADA (ВАЗ)": ["2107", "2110", "2112", "2114", "2115", "2121 (4x4)", "Granta", "Kalina", "Priora", "Vesta", "XRAY"],
+        "Audi": ["100", "80", "A3", "A4", "A5", "A6", "A6 allroad", "A8", "Q3", "Q5", "Q7"],
+        "BMW": ["1 серия", "3 серия", "5 серия", "6 серия", "7 серия", "X1", "X3", "X4", "X5", "X6", "X6 M"],
+        "Cadillac": ["ATS", "BLS", "CTS", "DeVille", "Eldorado", "Escalade", "Fleetwood", "SRX", "STS", "Seville", "XT"],
+		"Chery": ["Amulet (A15)", "Bonus (A13)", "Fora (A21)", "IndiS (S18D)", "Kimo (A1)", "M11 (A3)", "QQ6 (S21)", "Sweet (QQ)", "Tiggo (T11)", "Tiggo", "Very (A13)"],
+		"Chevrolet": ["Aveo", "Captiva", "Cobalt", "Cruze", "Epica", "Lacetti", "Lanos", "Niva", "Orlando", "Spark", "Tahoe"],
+		"Citroen": ["Berlingo", "C-Crosser", "C-Elysee", "C2", "C3", "C3 Picasso", "C4", "C4 Picasso", "C5", "DS4", "Xsara Picasso"],
+		"Daewoo": ["Damas", "Espero", "Gentra", "Lanos", "Leganza", "Matiz", "Nexia", "Nubira", "Sens", "Tico", "Winstorm"],
+		"Datsun": ["Cherry", "mi-DO", "on-DO"],
+		"Dodge": ["Caliber", "Caravan", "Challenger", "Charger", "Durango", "Intrepid", "Journey", "Neon", "Nitro", "RAM", "Stratus"],
+		"Fiat": ["500", "Albea", "Brava", "Bravo", "Doblo", "Fullback", "Linea", "Marea", "Panda", "Punto", "Stilo"],
+		"Ford": ["C-MAX", "EcoSport", "Escape", "Explorer", "Fiesta", "Focus", "Fusion", "Kuga", "Mondeo", "Mustang", "S-MAX"],
+		"Geely": ["CK (Otaka)", "Emgrand 7", "Emgrand EC7", "Emgrand EC8", "Emgrand GT", "Emgrand X7", "FC (Vision)", "GC6", "Haoqing", "MK", "MK Cross"],
+		"Great Wall": ["Deer", "Hover", "Hover H3", "Hover H5", "Hover H6", "Hover M2", "Hover M4", "Peri", "Safe", "Sailor", "Wingle"],
+		"Honda": ["Accord", "CR-V", "Civic", "Civic Ferio", "Fit", "HR-V", "Jazz", "Odyssey", "Pilot", "Stepwgn", "Stream"],
+		"Hyundai": ["Accent", "Creta", "Elantra", "Getz", "Santa Fe", "Solaris", "Sonata", "Starex (H-1)", "Tucson", "i30", "ix35"],
+		"Infiniti": ["EX", "FX", "G", "M", "Q50", "Q70", "QX50", "QX56", "QX60", "QX70", "QX80"],
+		"Jaguar": ["F-Pace", "F-Type", "S-Type", "X-Type", "XE", "XF", "XFR", "XJ", "XJR", "XK", "XKR"],
+		"Jeep": ["Cherokee", "CJ", "Commander", "Compass", "Grand Cherokee", "Grand Cherokee SRT8", "Liberty (North America)", "Liberty (Patriot)", "Renegade", "Wrangler"],
+		"Kia": ["Cee'd", "Cerato", "Magentis", "Optima", "Picanto", "Rio", "Sorento", "Soul", "Spectra", "Sportage", "Venga"],
+		"Land Rover": ["Defender", "Discovery", "Discovery Sport", "Freelander", "Range Rover", "Range Rover Evoque", "Range Rover Sport", "Range Rover Velar", "Series III"],
+		"Lexus": ["CT", "ES", "GS", "GX", "IS", "IS F", "LS", "LX", "NX", "RX", "SC"],
+		"Lifan": ["Breez (520)", "Cebrium (720)", "Celliya (530)", "Smily", "Solano", "X50", "X60"],
+		"Mazda": ["3", "323", "6", "626", "CX-5", "CX-7", "Demio", "Familia", "MPV", "Premacy", "Tribute"],
+		"Mercedes-Benz": ["A-klasse", "C-klasse", "E-klasse", "G-klasse", "GL-klasse", "GLC", "GLE", "GLK-klasse", "GLS-klasse", "M-klasse", "S-klasse"],
+		"Mitsubishi": ["ASX", "Carisma", "Colt", "Delica", "Galant", "L200", "Lancer", "Montero Sport", "Outlander", "Pajero", "Pajero Sport"],
+		"Nissan": ["Almera", "Almera Classic", "Juke", "Murano", "Note", "Primera", "Qashqai", "Teana", "Terrano", "Tiida", "X-Trail"],
+		"Opel": ["Antara", "Astra", "Corsa", "Frontera", "Insignia", "Kadett", "Meriva", "Mokka", "Omega", "Vectra", "Zafira"],
+		"Peugeot": ["107", "206", "207", "3008", "307", "308", "4007", "406", "407", "408", "Partner"],
+		"Porsche": ["718 Boxster", "718 Cayman", "911", "911 GT3", "924", "Boxster", "Cayenne", "Cayman", "Cayman GT4", "Macan", "Panamera"],
+		"Renault": ["Duster", "Fluence", "Kangoo", "Kaptur", "Koleos", "Laguna", "Logan", "Megane", "Sandero", "Scenic", "Symbol"],
+		"Skoda": ["100 Series", "Fabia", "Fabia RS", "Felicia", "Kodiaq", "Octavia", "Octavia RS", "Rapid", "Roomster", "Superb", "Yeti"],
+		"SsangYong": ["Actyon", "Actyon Sports", "Korando", "Korando Sports", "Kyron", "Musso", "Rexton", "Rodius", "Stavic", "Tivoli", "XLV"],
+		"Subaru": ["Exiga", "Forester", "Impreza", "Impreza WRX", "Impreza WRX STi", "Legacy", "Outback", "R2", "Stella", "Tribeca", "XV"],
+		"Suzuki": ["Alto", "Baleno", "Escudo", "Grand Vitara", "Ignis", "Jimny", "Liana", "SX4", "Splash", "Swift", "Vitara"],
+		"Toyota": ["Avensis", "Camry", "Carina", "Corolla", "Corona", "Highlander", "Land Cruiser", "Land Cruiser Prado", "Mark II", "RAV 4", "Tundra"],
+		"Volkswagen": ["Caddy", "Caravelle", "Golf", "Jetta", "Multivan", "Passat", "Passat CC", "Polo", "Tiguan", "Touareg", "Transporter"],
+		"Volvo": ["850", "940", "C30", "S40", "S60", "S80", "V40 Cross Country", "V90 Cross Country", "XC60", "XC70", "XC90"],
+		"ГАЗ": ["13 «Чайка»", "21 «Волга»", "24 «Волга»", "3102 «Волга»", "31029 «Волга»", "3110 «Волга»", "31105 «Волга»", "67", "69", "Volga Siber", "М-20 «Победа»"],
+		"УАЗ": ["3151", "3153", "3159", "3160", "3162 Simbir", "469", "Hunter", "Patriot", "Pickup"]
+    };
+
+    $(function () {
+        var brand = $('select[name="brand"]'),
+            model = $('select[name="model"]'),
+            year = $('select[name="year"], select[name="year_inputed"]');
+
+        // Инициализация возможных значений бренда
+        $.each(BRANDS, function (key) {
+            brand.append( '<option value="' + key + '">' + key + '</option>' );
+        });
+        // разблокируем поле
+        brand.prop( 'disabled',false);
+
+        // При изменении поля бренда
+        brand.change(function () {
+            model.prop( 'disabled',true);
+
+            // Очищаем список объектов
+            model.find( 'option:not(:first)' )
+                .remove(); // удаляем
+
+            var brand_name = $(this).val();
+
+            // Инициализация возможных значений Марок
+            $.each(BRANDS[brand_name], function (index, value) {
+                model.append( '<option value="' + value + '">' + value + '</option>' );
+            });
+            model.prop( 'disabled',false);
+        });
+
+        const   date            = new Date(),
+                current_year    = date.getFullYear();
+
+        for (var i= current_year - 10; i <= current_year; i++) {
+            year.append( '<option value="' + i + '">' + i + '</option>' );
+        }
+
+    });
+
+    $('#change_form').click(function () {
+        $('form#selected').hide();
+        $('form#inputed').show();
+        $(this).parent().hide()
+    });
+
+    var on_close_url='', session_pk='';
+    var requestParams = new URLSearchParams(window.location.search);
+    if (!requestParams.has('session_pk') || !requestParams.has('on_close_url')) {
+        throw new Error("Fatal Error! Missing required parameters!");
+
+    }
+    session_pk = requestParams.get('session_pk');
+    on_close_url = requestParams.get('on_close_url');
+    console.log('session_pk: '+ session_pk);
+    console.log('on_close_url: '+ on_close_url);
+
+    var url='http://fstrk.herokuapp.com/api/server_register_answer/'+session_pk+'/';
+
+
+    function done(data, status, jqXHR){
+
+        if ((jqXHR.status == '200') && (status == 'success')){
+
+            window.location.assign(on_close_url);
+
+        } else{
+            console.log("status " + status);
+            console.log("jqXHR status " + jqXHR.status);
+        }
+
+    }
+    function send() {
+        $('#error').html('');
+
+        if (($("select[name='brand']").val() === '') || ($("select[name='model']").val() === '') || ($("select[name='year']").val() === '')){
+            $('#error').html('Пожалуйста, заполните все поля');
+            return;
+        }
+        var creditInfo = $("select[name='brand']").val() + "," + $("select[name='model']").val() + "," +  $("select[name='year']").val();
+        console.log(creditInfo);
+        var request = $.ajax({
+            url: url,
+            method: "POST",
+            data: { "value" : creditInfo },
+            dataType: "json",
+            success: done
+
+        });
+
+
+        request.fail(function( jqXHR, textStatus ) {
+            console.log( "Request failed: " + textStatus );
+
+        });
+    }
+    function send_inputed() {
+        $('#error_inputed').html('');
+
+        if (($("input[name='brand_inputed']").val() === '') || ($("input[name='model_inputed']").val() === '') || ($("select[name='year_inputed']").val() === '')){
+            $('#error_inputed').html('Пожалуйста, заполните все поля');
+            return;
+        }
+        var creditInfo_inputed = $("input[name='brand_inputed']").val() + "," + $("input[name='model_inputed']").val() + "," +  $("select[name='year_inputed']").val();
+        console.log(creditInfo_inputed);
+        var request = $.ajax({
+            url: url,
+            method: "POST",
+            data: { "value" : creditInfo_inputed },
+            dataType: "json",
+            success: done
+
+        });
+
+
+        request.fail(function( jqXHR, textStatus ) {
+            console.log( "Request failed: " + textStatus );
+
+        });
+    }
+    $("#creditID").click(send);
+    $("#creditID_inputed").click(send_inputed);
+
+
+
+
+</script>
+</body>
+</html>

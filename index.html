@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="format-detection" content="telephone=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/powerange.css" />
+    <link rel="stylesheet" href="css/checkbox.css" />
+
+    <link href="css/style.css" rel="stylesheet" media="screen">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/url-search-params.js" type="text/javascript" charset="utf-8"></script>
+
+
+
+</head>
+<body>
+
+<div class="container">
+    <form>
+        <div class="block block1">
+            <div class="title2">Размер займа</div>
+            <div class="slider-wrapper">
+                <div class="center"><div id="js-display-change" class="display-box">75000</div><span> руб.</span></div>
+                <input id="sum" name="sum" type="text" class="js-check-change" />
+            </div>
+        </div>
+        <div class="block container-fluid">
+            <div class="title2">Период займа</div>
+            <div class="row text-center">
+                <div class="col-xs-6 checkbox-btn">
+                    <input type="radio" value="1" name="period" id="rc1" hidden checked>
+                    <label for="rc1" onclick>1 год</label>
+                </div>
+                <div class="col-xs-6 checkbox-btn">
+                    <input type="radio" value="2" name="period" id="rc2" hidden>
+                    <label for="rc2" onclick>2 годa</label>
+                </div>
+            </div>
+        </div>
+        <div class="block block2">
+            <div class="title2 title3">Ежемесячный платеж:</div>
+            <div class="center"><div class="input-bg"><input name="payment" id="payment" value="1000 руб." readonly="readonly" class="black-input" type="text" id="month-payment"></div></div>
+        </div>
+        <div class="block">
+            <p style="color: red; text-align: center; margin-bottom: 10px" id="error"></p>
+            <div class="input-bg"><input id="creditID" class="submit" type="button" value="OK"></div>
+        </div>
+    </form>
+
+
+
+</div>
+
+<script src="js/powerange.min.js"></script>
+<script type="text/javascript">
+
+    const DAY_PERCENT_12 = 0.2416;
+    const DAY_PERCENT_24 = 0.2416;
+
+    // Функция расчета ежемесячного платежка
+    function calculate_month_value (period, sum) {
+        var countMonth  = period * 12,
+            day_percent = period === "1" ? DAY_PERCENT_12: period === "2" ? DAY_PERCENT_24: 0,
+            pm = ((day_percent / 100) * 30.408); //процентная ставка в месяц(30.408 коррекция для 1с)
+        return Math.ceil(sum * (pm + (pm / (Math.pow(1 + pm, countMonth) - 1)))); //аннуитетный(ежемесячный платеж)
+    }
+
+    // On change.
+    var changeInput = document.querySelector('.js-check-change')
+        , initChangeInput = new Powerange(changeInput, {hideRange: true, start: 75000, min: 75000, max: 1000000, step: 5000, callback: recalculate_month_value });
+
+    // Функция перерасчета ежемесячного платежа
+    function recalculate_month_value () {
+        var sum = changeInput.value,
+            period = $('input[name="period"]:checked').val(),
+            value = calculate_month_value(period, sum);
+        $('input[name="payment"]').val(value + ' руб.')
+    }
+
+    $('input[name="period"]').change(recalculate_month_value);
+
+    changeInput.onchange = function() {
+        document.getElementById('js-display-change').innerHTML = changeInput.value;
+    };
+
+
+    var on_close_url='', session_pk='';
+    var requestParams = new URLSearchParams(window.location.search);
+    if (!requestParams.has('session_pk') || !requestParams.has('on_close_url')) {
+        throw new Error("Fatal Error! Missing required parameters!");
+
+    }
+    session_pk = requestParams.get('session_pk');
+    on_close_url = requestParams.get('on_close_url');
+    console.log('session_pk: '+ session_pk);
+    console.log('on_close_url: '+ on_close_url);
+
+    var url='http://fstrk.herokuapp.com/api/server_register_answer/'+session_pk+'/';
+
+
+    function done(data, status, jqXHR){
+
+        if ((jqXHR.status == '200') && (status == 'success')){
+
+            window.location.assign(on_close_url);
+
+        } else{
+            console.log("status " + status);
+            console.log("jqXHR status " + jqXHR.status);
+        }
+
+    }
+    function send() {
+        $('#error').html('');
+
+        if (($("#sum").val() == '') || ($("input[name='period']:checked").val() == '') || ($("#payment").val() == '')){
+            $('#error').html('Пожалуйста, заполните все поля');
+            return;
+        }
+        var creditInfo = $("#sum").val() + "," + $("input[name='period']:checked").val() + "," +  $("#payment").val();
+        console.log(creditInfo);
+        var request = $.ajax({
+            url: url,
+            method: "POST",
+            data: { "value" : creditInfo },
+            dataType: "json",
+            success: done
+
+        });
+
+
+        request.fail(function( jqXHR, textStatus ) {
+            console.log( "Request failed: " + textStatus );
+
+        });
+    }
+    $("#creditID").click(send);
+
+
+
+
+</script>
+</body>
+</html>
