@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.0.6/mediaelement-and-player.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.0.6/mediaelementplayer.min.css" />
+
+</head>
+<body>
+
+
+<script>
+    function getReferrerParameter(name) {
+        var param = decodeURI(
+                (RegExp(name + '=' + '(.+?)(&|$)').exec(document.referrer)||[,null])[1] || ''
+        );
+        return decodeURIComponent(param.replace(/\+/gim," "));
+    }
+
+    var file_name = getReferrerParameter('file_name');
+
+    function from_referrer(){
+        return /video_first.html/i.test(document.referrer)
+    }
+
+
+
+</script>
+
+<video id="myvideo">
+    <source id="video_source" type="video/mp4" src="movie2.mp4"/>
+</video>
+
+
+<script>
+    $(document).ready(function(){
+
+
+        // Если у нас есть линк на видео и если юзер пришел со страницы first.html,
+        // вставляем ему видео в страницу и включаем плеер.
+        // Ссылка должна быть в формате http://domain.com/first.html?file_name=somevideo.mp4
+
+        if(file_name && from_referrer()){
+
+            $('#video_source').attr('src', file_name);
+            $('#myvideo').mediaelementplayer({
+                pluginPath: "/path/to/shims/",
+                stretching: 'responsive'
+            });
+        } else {
+            document.write('Вы открыли эту страницу не из бота. Просмотр запрещен.')
+        }
+
+
+
+    })
+
+</script>
+
+
+
+</body>
+</html>

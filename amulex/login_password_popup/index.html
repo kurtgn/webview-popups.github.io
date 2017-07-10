@@ -1,0 +1,111 @@
+<!-- Файл для загрузки на CDN. В Django не используется. -->
+
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>-</title>
+    <link rel="stylesheet" href="weui.min.css"/>
+    <link rel="stylesheet" href="custom.css"/>
+    <style>
+        .weui-btn-area {
+            text-align: center;
+        }
+
+        .weui-btn-area img{
+            width: 50px;
+            height: 50px;
+        }
+
+    </style>
+</head>
+<body>
+
+
+
+<div class="container">
+    <div class="page input js_show">
+        <div class="page__hd">
+            <h1 class="page__title" id="title"></h1>
+            <p class="page__desc" id="subtitle"></p>
+        </div>
+        <div class="page__bd">
+
+
+            <div class="weui-cells__title">Username</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" id="id_username" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cells__title">Password</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" id="id_password"  type="password">
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-btn-area">
+                <a class="weui-btn weui-btn_primary" id="submit_btn" href="#">OK</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script>
+    function getURLParameter(name) {
+        var param = decodeURI(
+                (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1] || ''
+        );
+        return decodeURIComponent(param.replace(/\+/gim," "));
+    }
+
+
+
+    $('#title').html(getURLParameter('title'));
+    $('#subtitle').html(getURLParameter('subtitle'));
+
+    $('#submit_btn').click(function(e){
+        e.preventDefault();
+
+        $(this).parent().html('<img src="http://cdn.fstrk.io/media/loading.gif">');
+
+
+
+        var result_string = $('#id_username').val() + ',' + $('#id_password').val();
+
+        $.ajax({
+            url: 'http://fstrk.herokuapp.com/api/server_register_answer/' + getURLParameter('session_pk') + '/',
+            type: 'POST',
+            data: {value: result_string},
+            error: function(x,t,e){
+                alert('Ошибка. Обратитесь к администратору.')
+            },
+            success: function(success_data){
+                var on_close_url = getURLParameter('on_close_url');
+                if(on_close_url){
+                    document.location = on_close_url;
+                }
+            }
+
+        });
+
+
+        console.log(result_string);
+    })
+
+
+</script>
+
+
+
+</body>
