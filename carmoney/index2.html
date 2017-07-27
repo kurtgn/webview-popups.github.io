@@ -24,6 +24,8 @@
         <input  name="name" id="name" class="text-input" type="text" placeholder="Имя" pattern="^[а-яА-ЯёЁ -]+$">
         <input  name="middle-name" id="middle-name" class="text-input" type="text" placeholder="Отчество" pattern="^[а-яА-ЯёЁ -]+$">
 
+        <input  name="phone" id="phone" class="text-input" type="text" placeholder="Телефон">
+
         <fieldset class="form-group datefields">
             <legend>Дата рождения</legend>
             <div class="col-xs-3 day">
@@ -67,6 +69,7 @@
     $('input[name="id-number2"]').inputmask({"mask": "999999"});
     $('input[name="district"]').inputmask({"regex": "^[а-яА-ЯёЁ. -()]+$"});
     $('input[name="last-name"], input[name="name"], input[name="middle-name"]').inputmask({"regex": "^[а-яА-ЯёЁ -]+$"});
+    $('input[name="phone"]').inputmask({"mask": "+7 (999) 999-9999"});
     // месяцы
     const MONTHS = [
         'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
@@ -196,7 +199,7 @@
 
         $('#error').html('');
 
-        if (($("#last-name").val() == '') || ($("#name").val() == '') || !birthday_str() || ($("#id-number1").val() == '') || ($("#id-number2").val() == '') || ($("#district").val() == '')){
+        if (($("#last-name").val() == '') || ($("#name").val() == '')|| ($("#phone").val() == '') || !birthday_str() || ($("#id-number1").val() == '') || ($("#id-number2").val() == '') || ($("#district").val() == '')){
             $('#error').html('Пожалуйста, заполните все поля');
             return;
         }
@@ -211,7 +214,7 @@
             }
         }
 
-        var userInfo = $("#last-name").val() + "," + $("#name").val()+ "," +  middle_name_str() + birthday_str() + ',' + $("#id-number1").val()+ "," + $("#id-number2").val()+ "," +$("#district").val();
+        var userInfo = $("#last-name").val() + "," + $("#name").val()+ "," +  middle_name_str() + $("#phone").val() + birthday_str() + ',' + $("#id-number1").val()+ "," + $("#id-number2").val()+ "," +$("#district").val();
         console.log(userInfo);
 
         $('#loader').show();
