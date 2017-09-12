@@ -38,12 +38,12 @@
             <div class="title2">Период займа</div>
             <div class="row text-center">
                 <div class="col-xs-6 checkbox-btn">
-                    <input type="radio" value="1" name="period" id="rc1" hidden checked>
-                    <label for="rc1" onclick>1 год</label>
+                    <input type="radio" value="2" name="period" id="rc2" hidden checked>
+                    <label for="rc2" onclick>2 года</label>
                 </div>
                 <div class="col-xs-6 checkbox-btn">
-                    <input type="radio" value="2" name="period" id="rc2" hidden>
-                    <label for="rc2" onclick>2 годa</label>
+                    <input type="radio" value="3" name="period" id="rc3" hidden>
+                    <label for="rc3" onclick>3 года</label>
                 </div>
             </div>
         </div>
@@ -64,13 +64,13 @@
 <script src="js/powerange.min.js"></script>
 <script type="text/javascript">
 
-    const DAY_PERCENT_12 = 0.2416;
     const DAY_PERCENT_24 = 0.2416;
+    const DAY_PERCENT_36 = 0.2416;
 
     // Функция расчета ежемесячного платежка
     function calculate_month_value (period, sum) {
         var countMonth  = period * 12,
-            day_percent = period === "1" ? DAY_PERCENT_12: period === "2" ? DAY_PERCENT_24: 0,
+            day_percent = period === "2" ? DAY_PERCENT_24: period === "3" ? DAY_PERCENT_36: 0,
             pm = ((day_percent / 100) * 30.408); //процентная ставка в месяц(30.408 коррекция для 1с)
         return Math.ceil(sum * (pm + (pm / (Math.pow(1 + pm, countMonth) - 1)))); //аннуитетный(ежемесячный платеж)
     }
