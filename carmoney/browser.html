@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/bowser.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/useragents.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+
+<script>
+    document.write(window.navigator.userAgent + "<br>");
+    document.write("Браузер: " + bowser.name + "<br>");
+    document.write("Версия: " + bowser.version + "<br>");
+    document.write("<hr>");
+    for (key in bowser) {
+        document.write(key + ": " + bowser[key] + "<br><br>")
+    }
+
+</script>
+</body>
+</html>
