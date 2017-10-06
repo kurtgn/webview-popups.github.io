@@ -584,7 +584,8 @@
   margin: 0 auto;
 }
 
-@media screen and (max-width: 50em), screen and (max-height: 38em) {
+/*@media screen and (max-width: 50em), screen and (max-height: 38em) {*/
+@media screen {
   .header {
     display: block;
     text-align: center;
