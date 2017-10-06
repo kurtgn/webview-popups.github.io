@@ -1,0 +1,19 @@
+{
+  "name": "mlpages",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bower": ">=1.7.9"
+  },
+  "devDependencies": {
+    "live-server": "~0.9.2"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/live-server ./siteroot",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "./node_modules/.bin/bower install"
+  },
+  "author": "Andrey Paskal <apaskal@gmail.com>",
+  "license": "BSD-2-Clause"
+}
