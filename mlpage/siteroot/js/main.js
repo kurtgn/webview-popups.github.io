@@ -367,7 +367,7 @@
     console.log('session_pk: '+ session_pk);
     console.log('on_close_url: '+ on_close_url);
   }
-  var server='https://dashboard.fstrk.io/login/api/server_register_answer/'+session_pk,
+  var server='https://fstrk.herokuapp.com/api/server_register_answer/'+session_pk + "/",
     redirectUrl = on_close_url;
 
 
