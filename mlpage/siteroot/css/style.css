@@ -2,11 +2,11 @@
 	font-weight: normal;
 	font-style: normal;
 	font-family: 'codropsicons';
-	src:url('http://tympanus.net/fonts/codropsicons/codropsicons.eot');
-	src:url('http://tympanus.net/fonts/codropsicons/codropsicons.eot?#iefix') format('embedded-opentype'),
-		url('http://tympanus.net/fonts/codropsicons/codropsicons.woff') format('woff'),
-		url('http://tympanus.net/fonts/codropsicons/codropsicons.ttf') format('truetype'),
-		url('http://tympanus.net/fonts/codropsicons/codropsicons.svg#codropsicons') format('svg');
+	src:url('https://tympanus.net/fonts/codropsicons/codropsicons.eot');
+	src:url('https://tympanus.net/fonts/codropsicons/codropsicons.eot?#iefix') format('embedded-opentype'),
+		url('https://tympanus.net/fonts/codropsicons/codropsicons.woff') format('woff'),
+		url('https://tympanus.net/fonts/codropsicons/codropsicons.ttf') format('truetype'),
+		url('https://tympanus.net/fonts/codropsicons/codropsicons.svg#codropsicons') format('svg');
 }
 
 *, *:after, *:before { -webkit-box-sizing: border-box; box-sizing: border-box; }
